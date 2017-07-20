@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>test</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+</head>
+<body>
+  <form method="post" action="/dat" style="margin:20px">
+  	<input type="text" name="id" placeholder=" container name here !"><br><br>
+    <input type="button" name="submit" value="submit" onclick="get_blobs()">
+  </form>
+</body>
+<script>
+  function get_blobs()
+  {
+    // Assumed that the name of the container is stored in the cookie ( i.e. along with the name of the container there is other information too in the cookie. The name of the container is the second value returned by the document.cookie )
+	var x_co =document.cookie;
+	var param = x_co.split("&");
+	var k =  param[1].split("=");
+	
+	// id_dat contains the name of the container 
+    var id_dat = k[1].trim();
+	
+	//Inorder to make cross domain requests I used JSONP 
+	var s = document.createElement("script");
+	
+	/* myDisplayFunction is the function which will be invoked after the browser(client) receives the response from the server (local host in this case) */
+    s.src = "http://localhost:1235/dat?id="+id_dat+"&callback=myDisplayFunction";
+	
+	s.type= 'text/javascript';
+    document.body.appendChild(s);
+  }
+   
+   // myObj represents the response returned by the server(localhost in this case)
+  function myDisplayFunction(myObj) {
+    console.log(myObj);
+}
+</script>
+</html>
